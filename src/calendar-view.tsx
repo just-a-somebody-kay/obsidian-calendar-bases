@@ -19,6 +19,7 @@ interface CalendarEntry {
   entry: BasesEntry;
   startDate: Date;
   endDate?: Date;
+  color?: string; 
 }
 
 export class CalendarView extends BasesView {
@@ -44,6 +45,12 @@ export class CalendarView extends BasesView {
   }
 
   onload(): void {
+    // this.registerEvent(
+    //   this.app.metadataCache.on("changed", (file) => {
+    //     if (!file) return;
+    //     this.updateCalendar();
+    //   })
+    // );
     // React components will handle their own lifecycle
   }
 
@@ -65,6 +72,7 @@ export class CalendarView extends BasesView {
   }
 
   public onDataUpdated(): void {
+    // this.app.metadataCache.on("changed", () => {this.updateCalendar()});
     this.containerEl.removeClass("is-loading");
     this.loadConfig();
     this.updateCalendar();
@@ -114,6 +122,26 @@ export class CalendarView extends BasesView {
         });
       }
     }
+    // //vibecoded
+    // for (const entry of this.data.data) {
+    //   const startDate = this.extractDate(entry, this.startDateProp);
+    //   if (startDate) {
+    //     const endDate = this.endDateProp
+    //       ? (this.extractDate(entry, this.endDateProp) ?? undefined)
+    //       : undefined;
+
+    //     const cache = this.app.metadataCache.getFileCache(entry.file);
+    //     const color = cache?.frontmatter?.color;
+
+    //     this.entries.push({
+    //       entry,
+    //       startDate,
+    //       endDate,
+    //       color,
+    //     });
+    //   }
+    // }
+    // //vibecoded
 
     this.renderReactCalendar();
   }

@@ -18,6 +18,7 @@ export default class ObsidianCalendarPlugin extends Plugin {
         new CalendarView(controller, containerEl),
       options: () => CalendarView.getViewOptions(), 
     });
+    
   }
 
   onunload() {

@@ -103,45 +103,14 @@ export const CalendarReactView: React.FC<CalendarReactViewProps> = ({
       extendedProps: {
         entry: calEntry.entry,
         originalEndDate: calEntry.endDate, // Keep track of original end date for drag operations
+        color: calEntry.color,
       },
     };
   });
 
+  
+
   const handleEventClick = useCallback(
-    (clickInfo: EventClickArg) => {
-      const target = clickInfo.jsEvent.target as HTMLElement;
-      const entry = clickInfo.event.extendedProps.entry as BasesEntry;
-      const isModEvent = clickInfo.jsEvent.ctrlKey || clickInfo.jsEvent.metaKey;
-
-      // Let interactive elements inside the event handle the click instead of opening the note
-      const clickedTag = target.closest("a.tag");
-      if (clickedTag) {
-        return;
-      }
-
-      const clickedLink = target.closest(".internal-link") as HTMLElement | null;
-      if (clickedLink) {
-        return;
-      }
-
-      const clickedExternal = target.closest("a.external-link") as
-        | HTMLAnchorElement
-        | undefined;
-      if (clickedExternal?.href) {
-        return;
-      }
-
-      // Default: open the event's note
-      clickInfo.jsEvent.preventDefault();
-      onEntryClick(entry, isModEvent);
-    },
-    [app, onEntryClick],
-  );
-
-  // Track contextmenu listeners per element to prevent duplicates across hover cycles
-  const contextMenuListenersRef = useRef(new WeakMap<HTMLElement, (evt: Event) => void>());
-
-  const handleEventMouseEnter = useCallback(
     (mouseEnterInfo: { event: EventApi; el: HTMLElement; jsEvent: MouseEvent }) => {
       const entry = mouseEnterInfo.event.extendedProps.entry as BasesEntry;
       const el = mouseEnterInfo.el;
@@ -177,7 +146,78 @@ export const CalendarReactView: React.FC<CalendarReactViewProps> = ({
       el.addEventListener("contextmenu", contextMenuHandler);
     },
     [app, onEntryContextMenu],
+
+
+    // (clickInfo: EventClickArg) => {
+    //   const target = clickInfo.jsEvent.target as HTMLElement;
+    //   const entry = clickInfo.event.extendedProps.entry as BasesEntry;
+    //   const isModEvent = clickInfo.jsEvent.ctrlKey || clickInfo.jsEvent.metaKey;
+
+    //   // Let interactive elements inside the event handle the click instead of opening the note
+    //   const clickedTag = target.closest("a.tag");
+    //   if (clickedTag) {
+    //     return;
+    //   }
+
+    //   const clickedLink = target.closest(".internal-link") as HTMLElement | null;
+    //   if (clickedLink) {
+    //     return;
+    //   }
+
+    //   const clickedExternal = target.closest("a.external-link") as
+    //     | HTMLAnchorElement
+    //     | undefined;
+    //   if (clickedExternal?.href) {
+    //     return;
+    //   }
+
+    //   // Default: open the event's note
+    //   clickInfo.jsEvent.preventDefault();
+    //   onEntryClick(entry, isModEvent);
+    // },
+    // [app, onEntryClick],
   );
+
+  // Track contextmenu listeners per element to prevent duplicates across hover cycles
+  const contextMenuListenersRef = useRef(new WeakMap<HTMLElement, (evt: Event) => void>());
+
+  // const handleEventMouseEnter = useCallback(
+  //   (mouseEnterInfo: { event: EventApi; el: HTMLElement; jsEvent: MouseEvent }) => {
+  //     const entry = mouseEnterInfo.event.extendedProps.entry as BasesEntry;
+  //     const el = mouseEnterInfo.el;
+
+  //     if (app) {
+  //       app.workspace.trigger("hover-link", {
+  //         event: mouseEnterInfo.jsEvent,
+  //         source: "bases",
+  //         hoverParent: hoverParentRef.current,
+  //         targetEl: el,
+  //         linktext: entry.file.path,
+  //       });
+  //     }
+
+  //     // Remove previous contextmenu listener if one exists (prevents duplicates)
+  //     const prevHandler = contextMenuListenersRef.current.get(el);
+  //     if (prevHandler) {
+  //       el.removeEventListener("contextmenu", prevHandler);
+  //     }
+
+  //     const contextMenuHandler = (evt: Event) => {
+  //       evt.preventDefault();
+  //       const syntheticEvent = {
+  //         nativeEvent: evt as MouseEvent,
+  //         currentTarget: el,
+  //         target: evt.target as HTMLElement,
+  //         preventDefault: () => evt.preventDefault(),
+  //         stopPropagation: () => evt.stopPropagation(),
+  //       } as unknown as React.MouseEvent;
+  //       onEntryContextMenu(syntheticEvent, entry);
+  //     };
+  //     contextMenuListenersRef.current.set(el, contextMenuHandler);
+  //     el.addEventListener("contextmenu", contextMenuHandler);
+  //   },
+  //   [app, onEntryContextMenu],
+  // );
 
   // const handleEventDrop = useCallback(
   //   async (dropInfo: EventDropArg) => {
@@ -290,6 +330,8 @@ export const CalendarReactView: React.FC<CalendarReactViewProps> = ({
         }
       }
 
+      
+
       if (validProperties.length > 0) {
         const firstProperty = validProperties[0];
         const remainingProperties = validProperties.slice(1);
@@ -344,13 +386,25 @@ export const CalendarReactView: React.FC<CalendarReactViewProps> = ({
       events={events}
       eventContent={renderEventContent}
       eventClick={handleEventClick}
-      eventMouseEnter={handleEventMouseEnter}
+      // eventMouseEnter={handleEventMouseEnter}
       // eventDrop={(info) => void handleEventDrop(info)}
       height="auto"
       fixedWeekCount={true}
       fixedMirrorParent={document.body ?? undefined}
       eventDurationEditable={false}
       editable={false} //changed
+
+      //vibecoded-----
+      // eventDidMount={(info) => {
+      // const color = info.event.extendedProps.color as string | undefined;
+      // if (color) {
+      //   info.el.style.backgroundolor = color;
+      // }
+      
+      // //vibecoded-----
+
+      //   }
+      // }
     />
   );
 };
@@ -359,6 +413,7 @@ interface CalendarEntry {
   entry: BasesEntry;
   startDate: Date;
   endDate?: Date;
+  color?: string;
 }
 
 function tryGetValue(entry: BasesEntry, propId: BasesPropertyId): Value | null {

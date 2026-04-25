@@ -289,14 +289,13 @@ body {
     }
   }
 
-  .fc-event {
-    background-color: #fcc5ff !important; /*hard coded cause im tired*/
+  /* .fc-event {
     border: none !important;
     border-radius: 0px !important;
     font-weight: 500 !important;
     cursor: pointer !important;
     margin-bottom: 1px !important;
-  }
+  } */
 
   /* Layer transparent hover color ON TOP of solid event background via
      background-image (renders above background-color), keeping composite opaque
