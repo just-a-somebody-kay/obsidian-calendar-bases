@@ -19,7 +19,7 @@ interface CalendarEntry {
   entry: BasesEntry;
   startDate: Date;
   endDate?: Date;
-  color?: string; 
+  // color?: string; 
 }
 
 export class CalendarView extends BasesView {
