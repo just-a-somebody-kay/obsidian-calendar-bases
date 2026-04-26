@@ -290,7 +290,7 @@ body {
   }
 
   .fc-event {
-    background-color: var(--background-secondary) !important;
+    background-color: var(--background-secondary); /*no longer important as this is a backup in case there is no specified color*/
     border: none !important;
     border-radius: 3px !important;
     font-weight: 500 !important;

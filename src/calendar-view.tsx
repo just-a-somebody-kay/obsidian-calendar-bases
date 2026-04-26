@@ -19,6 +19,7 @@ interface CalendarEntry {
   entry: BasesEntry;
   startDate: Date;
   endDate?: Date;
+  backgroundColor?: string;
 }
 
 export class CalendarView extends BasesView {
@@ -32,6 +33,7 @@ export class CalendarView extends BasesView {
   private entries: CalendarEntry[] = [];
   private startDateProp: BasesPropertyId | null = null;
   private endDateProp: BasesPropertyId | null = null;
+  private backgroundColorProp: BasesPropertyId | null = null;
   private weekStartDay: number = 1;
 
   constructor(controller: QueryController, scrollEl: HTMLElement) {
@@ -73,6 +75,7 @@ export class CalendarView extends BasesView {
   private loadConfig(): void {
     this.startDateProp = this.config.getAsPropertyId("startDate");
     this.endDateProp = this.config.getAsPropertyId("endDate");
+    this.backgroundColorProp = this.config.getAsPropertyId("backgroundColor");
     const weekStartDayValue = this.config.get("weekStartDay") as string;
 
     const dayNameToNumber: Record<string, number> = {
@@ -107,10 +110,14 @@ export class CalendarView extends BasesView {
         const endDate = this.endDateProp
           ? (this.extractDate(entry, this.endDateProp) ?? undefined)
           : undefined;
+        const backgroundColor = this.backgroundColorProp
+          ? (this.extractbackgroundColor(entry, this.backgroundColorProp) ?? undefined)
+          : undefined;
         this.entries.push({
           entry,
           startDate,
           endDate,
+          backgroundColor,
         });
       }
     }
@@ -177,6 +184,20 @@ export class CalendarView extends BasesView {
       return null;
     } catch (error) {
       console.error(`Error extracting date for ${entry.file.name}:`, error);
+      return null;
+    }
+  }
+
+  private extractbackgroundColor(entry: BasesEntry, propId: BasesPropertyId): string | null {
+    try {
+      const value = entry.getValue(propId);
+      if (!value) {
+        return null;
+      } else {
+        return value.toString();
+      }
+    } catch (error) {
+      console.error(`Error extracting backgroundColor for ${entry.file.name}:`, error);
       return null;
     }
   }
@@ -265,8 +286,28 @@ export class CalendarView extends BasesView {
             key: "endDate",
             placeholder: "Property",
           },
+          {
+            displayName: "Background Color (optional)",
+            type: "property",
+            key: "backgroundColor",
+            placeholder: "Property",
+          },
         ],
       },
+
+      {
+        displayName: "Color properties",
+        type: "group",
+        items: [
+          {
+            displayName: "Background Color",
+            type: "property",
+            key: "backgroundColor",
+            placeholder: "Property",
+          },
+        ],
+      },
+      
       {
         displayName: "Calendar options",
         type: "group",
