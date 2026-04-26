@@ -289,7 +289,12 @@ body {
     }
   }
 
+<<<<<<< HEAD
   /* .fc-event {
+=======
+  .fc-event {
+    /* background-color: #fcc5ff !important; hard coded cause im tired */
+>>>>>>> tmp
     border: none !important;
     border-radius: 0px !important;
     font-weight: 500 !important;
