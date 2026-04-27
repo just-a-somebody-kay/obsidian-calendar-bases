@@ -100,6 +100,7 @@ export const CalendarReactView: React.FC<CalendarReactViewProps> = ({
         originalEndDate: calEntry.endDate, // Keep track of original end date for drag operations
       },
       backgroundColor: calEntry.backgroundColor,
+      textColor: calEntry.textColor,
     };
   });
 
@@ -356,6 +357,7 @@ interface CalendarEntry {
   startDate: Date;
   endDate?: Date;
   backgroundColor?: string;
+  textColor?: string;
 }
 
 function tryGetValue(entry: BasesEntry, propId: BasesPropertyId): Value | null {

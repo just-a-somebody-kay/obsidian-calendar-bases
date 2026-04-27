@@ -329,7 +329,8 @@ body {
 
 .bases-calendar-event-title {
   font-weight: var(--font-semibold);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  color:rgb(144, 144, 144);
 }
 
 .bases-calendar-event-properties {
